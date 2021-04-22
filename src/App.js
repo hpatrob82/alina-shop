@@ -11,7 +11,7 @@ import Header from './components/Header';
 // Pages
 import Homepage from './pages/Homepage/Homepage';
 import Registration from './components/registration/Registration'
-
+import Footer from './components/footer/Footer';
 
 function App() {
   <div className="fullHeight">
@@ -19,6 +19,7 @@ function App() {
   </div>
   return (
     <Router>
+       <Header/>
     <div className="App">
     
       <Switch>
@@ -28,7 +29,8 @@ function App() {
    </Switch>
      
     </div>
-    
+   
+    <Footer/>
     </Router>
   );
 }

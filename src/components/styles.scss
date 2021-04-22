@@ -1,5 +1,12 @@
-.header {
-    height: 9rem;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
-    //    
+// .header {
+//     height: 0.5rem;
+//     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+.wrap {
+    position: relative;
+    width: 15rem;
+    top: 100%;
+    left: 10px;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
