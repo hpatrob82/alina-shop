@@ -12,6 +12,7 @@ import Header from './components/Header';
 import Homepage from './pages/Homepage/Homepage';
 import Registration from './components/registration/Registration'
 import Footer from './components/footer/Footer';
+import Login from './components/login/Login';
 
 function App() {
   <div className="fullHeight">
@@ -25,7 +26,7 @@ function App() {
       <Switch>
    <Route exact path="/" component={Homepage} />
    <Route path="/registration" component={Registration} />
-  
+  <Route path="/login" component={Login} />
    </Switch>
      
     </div>

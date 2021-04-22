@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Header = props => {
     return (
         <header className="header">
-            <h1>Welcome to Alina Style Boutique!</h1>
+            
             <div className="wrap">
             
                 </div>
@@ -14,6 +14,17 @@ const Header = props => {
                             <Link to='/Registration'>
                             Register
                             </Link>
+                        </li>
+                        <li>
+                            <Link to='/login'>
+                            Login
+                            </Link>
+                           
+                        </li>
+                        <li>
+                        <Link to='/homepage'>
+                                
+                                </Link>
                         </li>
                     </ul>
                 </div>
