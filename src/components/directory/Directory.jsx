@@ -6,7 +6,7 @@ const Directory = (props) => {
   return (
    <div className="directory">
       <div className="item">
-        <div className="container" style={{ backgroundImage: `url(${logo})`, backgroundSize: 'cover' }}>
+        <div className="background" style={{ backgroundImage: `url(${logo})`, backgroundSize: 'cover' }}>
           
         </div>
         
