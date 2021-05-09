@@ -1,19 +1,24 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
+
 import "./components/default.scss";
 import "./components/styles.scss";
 import "./components/Header.jsx";
-import Header from "./components/Header";
+
 // Pages
-import "./components/shopping/ProductList";
-import "./components/shopping/AddProduct"
-import "./components/shopping/Cart";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Homepage from "./pages/Homepage/Homepage";
+import MainLayout from "./layouts/MainLayout";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Homepage from "./components/pages/Homepage/Homepage";
 import Registration from "./components/registration/Registration";
 import Footer from "./components/footer/Footer";
 import Login from "./components/login/Login";
-import { auth } from "./firebase/utils";
+import { auth, handleUserProfile } from "./firebase/utils";
 
 const initialState = {
   currentUser: null,
@@ -25,23 +30,28 @@ class App extends Component {
       ...initialState,
       user: null,
       cart: {},
-      products: []
+      products: [],
     };
-    this.routerRef = React.createRef()
+    this.routerRef = React.createRef();
   }
 
   authListener = null;
-  componentDidMount() {
-    this.authListener = auth.onAuthStateChanged((userAuth) => {
-      if (!userAuth) {
-        this.setState({
-          ...initialState
-        });
-        }
-      
 
+  componentDidMount() {
+    this.authListener = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await handleUserProfile(userAuth);
+        userRef.onSnapshot((snapshot) => {
+          this.setState({
+            currentUser: {
+              id: snapshot.id,
+              ...snapshot.data(),
+            },
+          });
+        });
+      }
       this.setState({
-        currentUser: userAuth,
+        ...initialState,
       });
     });
   }
@@ -52,19 +62,46 @@ class App extends Component {
 
   render() {
     const { currentUser } = this.state;
-    <div className="fullHeight">
-     
-    </div>;
+    <div className="container"></div>;
     return (
-      <Router>
-        <Header />
-        <div className="App">
-          <Switch>
-            <Route exact path="/" component={Homepage} currentUser={currentUser}/>
-            <Route path="/registration" component={Registration} currentUser={currentUser}/>
-            <Route path="/login" component={Login} currentUser={currentUser}/>
-          </Switch>
-        </div>
+      <Router ref={this.routerRef}>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <MainLayout currentUser={currentUser}>
+                <Homepage />
+              </MainLayout>
+            )}
+          />
+          <Route
+            path="/registration"
+            render={() => currentUser ? <Redirect to ="/" /> : (
+              <MainLayout currentUser={currentUser}>
+                <Registration />
+              </MainLayout>
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={() =>
+              currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <MainLayout currentUser={currentUser}>
+                  <Login />
+                </MainLayout>
+              )
+            }
+          />
+          <Route path="/login" component={Login} currentUser={currentUser} />
+          <div className={currentUser}>
+          <button onClick={() => auth.signOut()}>Logout</button>
+      </div>
+        </Switch>
+        
 
         <Footer />
       </Router>
