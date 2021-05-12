@@ -1,83 +1,77 @@
-import React, { Component } from 'react';
-import './styles.scss';
-import Buttons from './../forms/Button';
-import { Link } from 'react-router-dom';
-import { auth, signInWithGoogle } from './../../firebase/utils';
-import FormInput from './../input/FormInput';
-
+import React, { Component } from "react";
+import "./styles.scss";
+import Button from "./../forms/Button";
+import GoogleButton from "react-google-button";
+import { Link } from "react-router-dom";
+import { auth, signInWithGoogle } from "./../../firebase/utils";
+import FormInput from "./../input/FormInput";
 
 const initialState = {
-    email: '',
-    password: ''
+  email: "",
+  password: "",
 };
 
 class SignIn extends Component {
-constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
-        ...initialState
+      ...initialState,
     };
     this.handleChange = this.handleChange.bind(this);
-}
-handleChange(e) {
+  }
+  handleChange(e) {
     const { name, value } = e.target;
     this.setState({
-        [name]: value
-    })
-}
-    handleSubmit = async (e) => {
-        e.preventDefault();
-        const { email, password } = this.state;
+      [name]: value,
+    });
+  }
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = this.state;
 
-        try {
-           await auth.signInWithEmailAndPassword(email, password);
-           this.setState({
-               ...initialState
-           });
-        } catch(err) {
-            console.log(err);
-        }
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({
+        ...initialState,
+      });
+    } catch (err) {
+      console.log(err);
     }
-    render() {
-        const { email, password } = this.state;
-return (
-    <div className="signIn">
-<div className="wrap">
-    <h2> Login - Acceso Aqui</h2>
+  };
+  render() {
+    const { email, password } = this.state;
+    return (
+      <div className="signIn">
+        <div className="wrap">
+          <h2> Login - Acceso Aqui</h2>
 
-    <div className="fromWrap">
-        <form onSubmit={this.handleSubmit}>
-
-            <FormInput
-            type="email" name="email" value={email}
-            placeholder="Email"
-            handleChange={this.handleChange}
-            />
-<FormInput
-            type="password" name="Password" value={password}
-            placeholder="Password"
-            handleChange={this.handleChange}
-            />
-<Buttons type="submit">
-    Log In
-</Buttons>
-            <div className="socialSignin">
+          <div className="fromWrap">
+            <form onSubmit={this.handleSubmit}>
+              <FormInput
+                type="email"
+                name="email"
+                value={email}
+                placeholder="Email"
+                handleChange={this.handleChange}
+              />
+              <FormInput
+                type="password"
+                name="Password"
+                value={password}
+                placeholder="Password"
+                handleChange={this.handleChange}
+              />
+              <Button type="submit">Log In</Button>
+              <div className="socialSignin">
                 <div className="row">
-                    <Buttons onClick={signInWithGoogle}>
-                        Sign in with Google
-                        - Registrate con Google
-                    </Buttons>
-           
-        
-          
+                  <GoogleButton onClick={signInWithGoogle} />
                 </div>
-            </div>
-           
-        </form>
-    </div>
-</div>
-    </div>
-)
-}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 export default SignIn;

@@ -12,7 +12,16 @@ const Header = (props) => {
   return (
     <header className="header">
       <div className="wrap"></div>
-
+<div className="callToActions">
+  {currentUser && (
+    <ul>
+      <li>
+        <button onClick={() => auth.signOut()}>
+          Log Out
+        </button>
+      </li>
+    </ul>
+  )}
       <ul>
         <li>
           <Link to="/Registration">Register</Link>
@@ -28,11 +37,9 @@ const Header = (props) => {
           </Link>
 
         </li>
-        <div className={currentUser}>
-          <button onClick={() => auth.signOut()}>Logout</button>
-      </div>
+       
       </ul>
-     
+     </div>
     </header>
   );
 };
@@ -40,3 +47,6 @@ Header.defaultProps = {
   currentUser: null,
 };
 export default Header;
+{/* <div className={currentUser}>
+<button onClick={() => auth.signOut()}>Logout</button>
+</div> */}

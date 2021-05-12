@@ -7,16 +7,18 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./components/default.scss";
 import "./components/styles.scss";
 import "./components/Header.jsx";
 
 // Pages
-import MainLayout from "./layouts/MainLayout";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Recovery from "./components/pages/Reset/Recovery";
 import Homepage from "./components/pages/Homepage/Homepage";
 import Registration from "./components/registration/Registration";
-import Footer from "./components/footer/Footer";
+//Layouts
+import HomepageLayout from "./layouts/HomepageLayout";
+import MainLayout from "./layouts/MainLayout";
 import Login from "./components/login/Login";
 import { auth, handleUserProfile } from "./firebase/utils";
 
@@ -39,7 +41,7 @@ class App extends Component {
 
   componentDidMount() {
     this.authListener = auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
+      if (!userAuth) {
         const userRef = await handleUserProfile(userAuth);
         userRef.onSnapshot((snapshot) => {
           this.setState({
@@ -70,18 +72,22 @@ class App extends Component {
             exact
             path="/"
             render={() => (
-              <MainLayout currentUser={currentUser}>
+              <HomepageLayout currentUser={currentUser}>
                 <Homepage />
-              </MainLayout>
+              </HomepageLayout>
             )}
           />
           <Route
             path="/registration"
-            render={() => currentUser ? <Redirect to ="/" /> : (
-              <MainLayout currentUser={currentUser}>
-                <Registration />
-              </MainLayout>
-            )}
+            render={() =>
+              currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <MainLayout currentUser={currentUser}>
+                  <Registration />
+                </MainLayout>
+              )
+            }
           />
           <Route
             exact
@@ -97,13 +103,11 @@ class App extends Component {
             }
           />
           <Route path="/login" component={Login} currentUser={currentUser} />
-          <div className={currentUser}>
-          <button onClick={() => auth.signOut()}>Logout</button>
-      </div>
-        </Switch>
-        
 
-        <Footer />
+          <Route exact path="/recovery">
+            <Recovery />
+          </Route>
+        </Switch>
       </Router>
     );
   }
