@@ -43,14 +43,14 @@ class App extends Component {
     this.authListener = auth.onAuthStateChanged(async (userAuth) => {
       if (!userAuth) {
         const userRef = await handleUserProfile(userAuth);
-        userRef.onSnapshot((snapshot) => {
-          this.setState({
-            currentUser: {
-              id: snapshot.id,
-              ...snapshot.data(),
-            },
-          });
-        });
+        // userRef.onSnapshot((snapshot) => {
+        //   this.setState({
+        //     currentUser: {
+        //       id: snapshot.id,
+        //       ...snapshot.data(),
+        //     },
+        //   });
+        // });
       }
       this.setState({
         ...initialState,
@@ -79,7 +79,7 @@ class App extends Component {
           />
           <Route
             path="/registration"
-            render={() =>
+            render={() =>   
               currentUser ? (
                 <Redirect to="/" />
               ) : (

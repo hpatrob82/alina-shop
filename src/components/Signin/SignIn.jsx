@@ -8,7 +8,7 @@ import FormInput from "./../input/FormInput";
 
 const initialState = {
   email: "",
-  password: "",
+  password: ""
 };
 
 class SignIn extends Component {
